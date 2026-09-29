@@ -1,6 +1,25 @@
+import { useState } from "react";
 import "./login.css";
+import { getUser } from "../services/auth";
 
 
+function handleLogin(e) {
+  e.preventDefault();
+
+  const user = getUser();
+
+  if (!user) {
+    alert("No account found. Please sign up first.");
+    return;
+  }
+
+  if (email !== user.email || password !== user.password) {
+    alert("Wrong email or password!");
+    return;
+  }
+
+  alert("Login successful!");
+}
 
 function Login({onSignup}) {
     return (

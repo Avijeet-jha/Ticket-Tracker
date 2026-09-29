@@ -70,15 +70,6 @@
   cursor: pointer;
 }
 
-.signup-btn{
-    margin: 20px;
-    padding: 10px;
-    background-color: #555;
-}
-.signup-submit-btn:hover {
-  background: #333;
-}
-
 .login-link {
   text-align: center;
   margin-top: 25px;
