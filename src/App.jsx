@@ -1,14 +1,29 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
-
+import { useState } from "react";
 import Login from "./pages/login.jsx";
+import Signup from "./pages/Signup.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 function App() {
+  const [page, setPage] = useState("login");
+
   return (
-    <Login />
+    <>
+      {page === "login" && (
+        <Login
+          onSignup={() => setPage("signup")}
+        />
+      )}
+
+      {page === "signup" && (
+        <Signup
+          onLogin={() => setPage("login")}
+        />
+      )}
+
+      {page === "dashboard" && (
+        <Dashboard />
+      )}
+    </>
   );
 }
 

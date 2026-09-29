@@ -1,6 +1,27 @@
+import { useState } from "react";
 import "./login.css";
+import { getUser } from "../services/auth";
 
-const Login = () => {
+
+function handleLogin(e) {
+  e.preventDefault();
+
+  const user = getUser();
+
+  if (!user) {
+    alert("No account found. Please sign up first.");
+    return;
+  }
+
+  if (email !== user.email || password !== user.password) {
+    alert("Wrong email or password!");
+    return;
+  }
+
+  alert("Login successful!");
+}
+
+function Login({onSignup}) {
     return (
         <div className="login-page">
             <div className="login-card">
@@ -8,7 +29,8 @@ const Login = () => {
                 <p>please enter your credentials to login the dashboard</p>
 
                 <form>
-                    <div className="form-group">
+                    <div>
+                    <div className="login-form-group">
                         <label>Email :</label>
                         <input className="password-input"
                             type="email"
@@ -16,7 +38,7 @@ const Login = () => {
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="login-form-group">
                         <label>Password :</label>
                         <input className="password-input"
                             type="password"
@@ -28,11 +50,12 @@ const Login = () => {
                         Login
                     </button>
 
-                    <div className="signup-section">
+                    <div className="signup-link">
                         <span>New user?</span>
-                        <button type="button" className="signup-btn">
+                        <button type="button" onClick={onSignup}>
                             Sign Up
                         </button>
+                    </div>
                     </div>
                 </form>
             </div>
