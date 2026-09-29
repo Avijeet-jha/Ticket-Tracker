@@ -1,48 +1,59 @@
 * {
-    background-color: #140101ff;
-    color: #000000; 
+  background-color: rgb(255, 255, 255);
+  color: #000000;
 }
+
 .login-page {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
 .form-group {
-    margin:10px;
-    padding: 5px;
-    
+  margin: 10px;
+  padding: 5px;
+
 }
 
 .login-card {
-    border: 1px solid #2d2626;
-    width: 600px;
-    padding: 30px;
-    border-radius: 12px;
+  border: 1px solid #2d2626;
+  width: 600px;
+  padding: 30px;
+  border-radius: 12px;
 }
 
 
 .login-card h1 {
-    white-space: nowrap;
-    font-size: 40px;
-    color: #000000;
-    height: 70px;
-    margin: 20px;
-    padding: 5px;
-    text-transform: uppercase;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    text-wrap: nowrap;
+  <<<<<<< HEAD white-space: nowrap;
+  font-size: 50px;
+  color: #000000;
+  height: 70px;
+  text-align: center;
+  margin: 20px;
+  padding: 5px;
+  =======white-space: nowrap;
+  font-size: 40px;
+  color: #000000;
+  height: 70px;
+  margin: 20px;
+  padding: 5px;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  text-wrap: nowrap;
 
+  >>>>>>>ee5af294eac2526eceaf36b70971161494f455d6
 }
 
 .login-card p {
-    color: #000000;
-    text-align: center;
-    margin: 10px;
-    padding: 5px;
+  color: #000000;
+  text-align: center;
+  margin: 10px;
+  padding: 5px;
 }
+
 label {
   margin-right: 10px;
 }
@@ -52,6 +63,7 @@ input {
   border-radius: 10px;
 
 }
+
 .login-input {
   padding: 10px 15px;
   font-size: 16px;
@@ -64,7 +76,7 @@ input {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}   
+}
 
 .btn:hover {
   background-color: #8d5c5c;
