@@ -11,7 +11,7 @@
   align-items: center;
 }
 
-<<<<<<< HEAD
+
 .form-group {
   margin: 5px;
   padding: 5px;
@@ -26,8 +26,6 @@
   border: 2px solid #000000;
 }
 
-=======
->>>>>>> e3c9bf020907c448396d5eb787d3546fc5318786
 .login-card {
   width: 600px;
   padding: 50px;
@@ -103,10 +101,7 @@
   background: #333;
 }
 
-<<<<<<< HEAD
-.signup-btn {
-  margin-top: 20px;
-=======
+
 .signup-link {
   text-align: center;
   margin-top: 25px;
@@ -123,7 +118,6 @@
   color: #2563eb;
   font-size: 15px;
   font-weight: 600;
->>>>>>> e3c9bf020907c448396d5eb787d3546fc5318786
   cursor: pointer;
 }
 
