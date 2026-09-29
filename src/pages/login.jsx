@@ -1,5 +1,4 @@
 import "./login.css";
-import Signup from "./signup";
 
 
 
@@ -12,7 +11,7 @@ function Login({onSignup}) {
 
                 <form>
                     <div>
-                    <div className="form-group">
+                    <div className="login-form-group">
                         <label>Email :</label>
                         <input className="password-input"
                             type="email"
@@ -20,7 +19,7 @@ function Login({onSignup}) {
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="login-form-group">
                         <label>Password :</label>
                         <input className="password-input"
                             type="password"

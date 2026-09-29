@@ -5,100 +5,94 @@
 
 .login-page {
   min-height: 100vh;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.form-group {
-  margin: 5px;
-  padding: 5px;
-}
-
-.password-input{
-  margin: 3px;
-  padding: 5px;
-  border-radius: 5px;
-  border: 2px solid #000000;
-}
-
 .login-card {
-  border: 1px solid #2d2626;
-  width: 600px;
-  padding: 30px;
-  border-radius: 12px;
+  width: 500px;
+  padding: 50px;
+  border: 1px solid #333;
+  border-radius: 15px;
+  background: white;
 }
-
 
 .login-card h1 {
-  white-space: nowrap;
-  color: #000000;
-  height: 70px;
+  color: #000;
   text-align: center;
-  margin: 20px;
-  padding: 5px;
   font-size: 40px;
-  text-transform: uppercase;
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  text-wrap: nowrap;
+  margin: 0 0 15px 0;
 }
 
 .login-card p {
-  color: #000000;
   text-align: center;
-  margin: 10px;
-  padding: 5px;
+  margin-bottom: 35px;
+  color: #555;
 }
 
-label {
-  margin-right: 10px;
+.login-form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.input {
-  padding: 10px 15px;
-  border-radius: 10px;
+.login-form-group label {
+  width: 150px;
+  margin-right: 15px;
+  font-size: 17px;
 }
 
+.login-form-group input {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  box-sizing: border-box;
+}
 
-
-.login-input {
-  padding: 10px 15px;
-  font-size: 16px;
+.login-form-group input:focus {
+  outline: none;
+  border-color: #333;
 }
 
 .login-btn {
-  background-color: #000000;
-  color: #ffffff;
-  padding: 10px 20px;
+  display: block;
+  margin: 15px auto 0;
+  padding: 12px 30px;
   border: none;
-  border-radius: 5px;
+  border-radius: 7px;
+  background: black;
+  color: white;
+  font-size: 16px;
   cursor: pointer;
 }
 
 .login-btn:hover {
-  background-color: #8d5c5c;
-  color: #ffffff;
+  background: #333;
 }
 
-.signup-section {
-  margin-top: 20px;
+.signup-link {
   text-align: center;
+  margin-top: 25px;
 }
 
-.signup-section span {
+.signup-link span {
   margin-right: 8px;
   color: #555;
 }
 
-.signup-btn {
+.signup-link button {
   border: none;
   background: none;
   color: #2563eb;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  padding: 0;
 }
 
+.signup-link button:hover {
+  text-decoration: underline;
+}

@@ -10,56 +10,39 @@ function Signup({ onLogin }) {
         </p>
 
         <form>
+          <div>
+            <div className="signup-form-group">
+              <label>Full Name :</label>
+              <input type="text" placeholder="Enter your full name" />
+            </div>
 
-          <div className="signup-form-group">
-            <label>Full Name :</label>
-            <input
-              type="text"
-              placeholder="Enter your full name"
-            />
+            <div className="signup-form-group">
+              <label>Email :</label>
+              <input type="email" placeholder="Enter your email" />
+            </div>
+
+            <div className="signup-form-group">
+              <label>Password :</label>
+              <input type="password" placeholder="Enter your password" />
+            </div>
+
+            <div className="signup-form-group">
+              <label>Confirm Password :</label>
+              <input type="password" placeholder="Confirm your password" />
+            </div>
+
+            <button type="button" className="signup-btn">
+              Sign Up
+            </button>
           </div>
-
-          <div className="signup-form-group">
-            <label>Email :</label>
-            <input
-              type="email"
-              placeholder="Enter your email"
-            />
-          </div>
-
-          <div className="signup-form-group">
-            <label>Password :</label>
-            <input
-              type="password"
-              placeholder="Enter your password"
-            />
-          </div>
-
-          <div className="signup-form-group">
-            <label>Confirm Password :</label>
-            <input
-              type="password"
-              placeholder="Confirm your password"
-            />
-          </div>
-
-          <button type="button"  className="login"
-            onClick={onLogin}
-          >
-            Sign Up
-          </button>
-
         </form>
-
         <div className="login-link">
           <span>Already have an account?</span>
           <button type="button" onClick={onLogin}>
-          Login
+            Login
           </button>
         </div>
-
       </div>
-
     </div>
   );
 }
