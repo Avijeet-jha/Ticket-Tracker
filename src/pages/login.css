@@ -44,7 +44,7 @@
   text-align: center;
   text-wrap: nowrap;
 
-  >>>>>>>ee5af294eac2526eceaf36b70971161494f455d6
+  
 }
 
 .login-card p {
@@ -78,7 +78,12 @@ input {
   cursor: pointer;
 }
 
-.btn:hover {
+.login-btn:hover {
   background-color: #8d5c5c;
   color: #ffffff;
+}
+
+.signup-btn{
+  margin-top: 20px;
+  cursor: pointer;
 }
