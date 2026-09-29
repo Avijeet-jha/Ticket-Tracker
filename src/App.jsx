@@ -1,10 +1,11 @@
 import { useState } from "react";
 import Login from "./pages/login.jsx";
-import Signup from "./pages/signup.jsx";
-import Dashboard from "./pages/dashboard.jsx";
+import Signup from "./pages/Signup.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
 
 function App() {
-    const [page, setPage] = useState("dashboard");
+  const [page, setPage] = useState("login");
+
   return (
     <>
       {page === "login" && (
