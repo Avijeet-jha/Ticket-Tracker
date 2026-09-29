@@ -25,28 +25,26 @@
 
 
 .login-card h1 {
-<<<<<<< HEAD
-  white-space: nowrap;
+  <<<<<<< HEAD white-space: nowrap;
   font-size: 50px;
   color: #000000;
   height: 70px;
   text-align: center;
   margin: 20px;
   padding: 5px;
-=======
-    white-space: nowrap;
-    font-size: 40px;
-    color: #000000;
-    height: 70px;
-    margin: 20px;
-    padding: 5px;
-    text-transform: uppercase;
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    text-wrap: nowrap;
+  =======white-space: nowrap;
+  font-size: 40px;
+  color: #000000;
+  height: 70px;
+  margin: 20px;
+  padding: 5px;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  text-wrap: nowrap;
 
->>>>>>> ee5af294eac2526eceaf36b70971161494f455d6
+  >>>>>>>ee5af294eac2526eceaf36b70971161494f455d6
 }
 
 .login-card p {
