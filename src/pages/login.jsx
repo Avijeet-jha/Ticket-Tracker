@@ -10,7 +10,7 @@ const Login = () => {
                 <form>
                     <div className="form-group">
                         <label>Email :</label>
-                        <input
+                        <input className="password-input"
                             type="email"
                             placeholder="Enter your email"
                         />
@@ -18,7 +18,7 @@ const Login = () => {
 
                     <div className="form-group">
                         <label>Password :</label>
-                        <input
+                        <input className="password-input"
                             type="password"
                             placeholder="Enter your password"
                         />

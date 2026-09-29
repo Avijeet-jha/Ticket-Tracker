@@ -11,9 +11,15 @@
 }
 
 .form-group {
-  margin: 10px;
-  padding: 10px;
+  margin: 5px;
+  padding: 5px;
+}
 
+.password-input{
+  margin: 3px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 2px solid #000000;
 }
 
 .login-card {
