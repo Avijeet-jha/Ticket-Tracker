@@ -51,3 +51,17 @@ input {
   padding: 10px 15px;
   font-size: 16px;
 }
+
+.btn {
+  background-color: #000000;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}   
+
+.btn:hover {
+  background-color: #8d5c5c;
+  color: #ffffff;
+}
