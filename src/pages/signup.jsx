@@ -1,14 +1,15 @@
 import { useState } from "react";
 import "./Signup.css";
-import { saveUser } from "../services/auth";
+import { signupUser } from "../services/auth";
 
 function Signup({ onLogin }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  function handleSignup(e) {
+  async function handleSignup(e) {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -16,18 +17,24 @@ function Signup({ onLogin }) {
       return;
     }
 
-    const user = {
-      name: name,
-      email: email,
-      password: password,
-    };
+    try {
+      setLoading(true);
 
-    console.log("User data:", user);
-    saveUser(user);
+      // Call our FastAPI backend endpoint
+      await signupUser({
+        name: name,
+        email: email,
+        password: password,
+        role: "user"
+      });
 
-    alert("Account created successfully!");
-
-    onLogin();
+      alert("Account created successfully and saved in MySQL!");
+      onLogin(); // Redirect to login page
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -47,6 +54,7 @@ function Signup({ onLogin }) {
               <input
                 type="text"
                 placeholder="Enter your full name"
+                required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
@@ -58,6 +66,7 @@ function Signup({ onLogin }) {
               <input
                 type="email"
                 placeholder="Enter your email"
+                required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -69,6 +78,7 @@ function Signup({ onLogin }) {
               <input
                 type="password"
                 placeholder="Enter your password"
+                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -80,13 +90,14 @@ function Signup({ onLogin }) {
               <input
                 type="password"
                 placeholder="Confirm your password"
+                required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
 
-            <button type="submit" className="signup-btn">
-              Sign Up
+            <button type="submit" className="signup-btn" disabled={loading}>
+              {loading ? "Creating Account..." : "Sign Up"}
             </button>
           </div>
         </form>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Login from "./pages/login.jsx";
-import Signup from "./pages/Signup.jsx";
-import Dashboard from "./pages/Dashboard.jsx";
+import Signup from "./pages/signup.jsx";
+import Dashboard from "./pages/dashboard.jsx";
 
 function App() {
   const [page, setPage] = useState("login");
@@ -11,6 +11,7 @@ function App() {
       {page === "login" && (
         <Login
           onSignup={() => setPage("signup")}
+          onLoginSuccess={() => setPage("dashboard")}
         />
       )}
 
@@ -21,7 +22,9 @@ function App() {
       )}
 
       {page === "dashboard" && (
-        <Dashboard />
+        <Dashboard
+          onLogout={() => setPage("login")}
+        />
       )}
     </>
   );
