@@ -1,16 +1,52 @@
-# React + Vite
+# 🎫 Ticket Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A modern and collaborative **Ticket Tracking Web Application** built with **React and Vite**.
 
-Currently, two official plugins are available:
+Ticket Tracker is designed to help teams organize, manage, and monitor tickets/issues through a simple and user-friendly interface. The project is being developed collaboratively using Git and GitHub.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🚀 Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- 🎫 Create and manage tickets
+- 📋 View and organize tickets
+- 🔎 Track ticket information and status
+- 🖥️ Clean and responsive user interface
+- ⚡ Fast development with Vite
+- 🧩 Reusable React components
+- 🤝 GitHub-based team collaboration
+- 🔧 Code quality checks with Oxlint
 
-## Expanding the Oxlint configuration
+> 🚧 More features are currently under development.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| ⚛️ React 19 | Frontend UI |
+| ⚡ Vite | Development & build tool |
+| 🟨 JavaScript | Application logic |
+| 🔍 Oxlint | Code linting |
+| 📦 npm | Package management |
+| 🌐 Git & GitHub | Version control & collaboration |
+
+---
+
+## 📁 Project Structure
+
+```text
+Ticket-Tracker/
+│
+├── public/              # Static assets
+│
+├── src/                 # Application source code
+│
+├── .gitignore           # Git ignored files
+├── .oxlintrc.json       # Oxlint configuration
+├── index.html           # Application entry point
+├── package.json         # Project dependencies & scripts
+├── package-lock.json    # Dependency lock file
+├── vite.config.js       # Vite configuration
+└── README.md            # Project documentation
