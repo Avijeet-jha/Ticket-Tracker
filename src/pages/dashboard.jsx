@@ -1,196 +1,471 @@
-import "./dashboard.css";
+import { useState } from "react";
+import "./Dashboard.css";
 
-function Dashboard() {
+function Dashboard({ onLogout, username = "Manager" }) {
+  const [activeFilter, setActiveFilter] = useState("All");
+  const [showProfile, setShowProfile] = useState(false);
+
+  const [tickets, setTickets] = useState([
+    {
+      id: 101,
+      title: "Login Issue",
+      description: "Unable to login to the system",
+      user: "Rahul",
+      dateTime: "30 Sep 2026, 09:30 AM",
+      priority: "High",
+      status: "Pending",
+    },
+    {
+      id: 102,
+      title: "System Error",
+      description: "Error while opening the dashboard",
+      user: "Priya",
+      dateTime: "30 Sep 2026, 10:15 AM",
+      priority: "Medium",
+      status: "Pending",
+    },
+    {
+      id: 103,
+      title: "Password Reset",
+      description: "User requested a password reset",
+      user: "Amit",
+      dateTime: "30 Sep 2026, 11:00 AM",
+      priority: "Low",
+      status: "Accepted",
+    },
+    {
+      id: 104,
+      title: "Account Access",
+      description: "Unable to access the employee account",
+      user: "Sneha",
+      dateTime: "30 Sep 2026, 11:30 AM",
+      priority: "High",
+      status: "Pending",
+    },
+    {
+      id: 105,
+      title: "Email Issue",
+      description: "Unable to receive system emails",
+      user: "Rohit",
+      dateTime: "30 Sep 2026, 12:00 PM",
+      priority: "Medium",
+      status: "Rejected",
+    },
+    {
+      id: 106,
+      title: "Dashboard Error",
+      description: "Dashboard showing incorrect information",
+      user: "Neha",
+      dateTime: "30 Sep 2026, 12:30 PM",
+      priority: "High",
+      status: "Pending",
+    },
+    {
+      id: 107,
+      title: "Profile Update",
+      description: "Unable to update profile information",
+      user: "Karan",
+      dateTime: "30 Sep 2026, 01:00 PM",
+      priority: "Low",
+      status: "Accepted",
+    },
+    {
+      id: 108,
+      title: "Report Issue",
+      description: "Unable to generate monthly report",
+      user: "Anjali",
+      dateTime: "30 Sep 2026, 01:30 PM",
+      priority: "Medium",
+      status: "Pending",
+    },
+    {
+      id: 109,
+      title: "Server Problem",
+      description: "Server response is taking too long",
+      user: "Vikas",
+      dateTime: "30 Sep 2026, 02:00 PM",
+      priority: "High",
+      status: "Rejected",
+    },
+    {
+      id: 110,
+      title: "Notification Issue",
+      description: "Notifications are not appearing",
+      user: "Pooja",
+      dateTime: "30 Sep 2026, 02:30 PM",
+      priority: "Low",
+      status: "Pending",
+    },
+    {
+      id: 111,
+      title: "Database Error",
+      description: "Unable to retrieve database records",
+      user: "Arjun",
+      dateTime: "30 Sep 2026, 03:00 PM",
+      priority: "High",
+      status: "Pending",
+    },
+    {
+      id: 112,
+      title: "Application Error",
+      description: "Application closes unexpectedly",
+      user: "Riya",
+      dateTime: "30 Sep 2026, 03:30 PM",
+      priority: "Medium",
+      status: "Accepted",
+    },
+  ]);
+
+  // Approve ticket
+  function handleApprove(id) {
+    setTickets((currentTickets) =>
+      currentTickets.map((ticket) =>
+        ticket.id === id
+          ? { ...ticket, status: "Accepted" }
+          : ticket
+      )
+    );
+  }
+
+  // Reject ticket
+  function handleReject(id) {
+    setTickets((currentTickets) =>
+      currentTickets.map((ticket) =>
+        ticket.id === id
+          ? { ...ticket, status: "Rejected" }
+          : ticket
+      )
+    );
+  }
+
+  // Ticket counts
+  const totalTickets = tickets.length;
+
+  const pendingTickets = tickets.filter(
+    (ticket) => ticket.status === "Pending"
+  ).length;
+
+  const acceptedTickets = tickets.filter(
+    (ticket) => ticket.status === "Accepted"
+  ).length;
+
+  const rejectedTickets = tickets.filter(
+    (ticket) => ticket.status === "Rejected"
+  ).length;
+
+  // Filter tickets
+  const visibleTickets = tickets.filter(
+    (ticket) =>
+      activeFilter === "All" ||
+      ticket.status === activeFilter
+  );
+
   return (
     <div className="dashboard-page">
 
-      {/* Header */}
-      <header className="dashboard-header">
-        <div>
+      {/* ================= NAVBAR ================= */}
+
+      <nav className="dashboard-navbar">
+
+        <div className="navbar-title">
           <h1>Ticket Management</h1>
-          <p>Manage and review submitted tickets</p>
         </div>
 
-        <div className="manager-info">
-          <span>Manager</span>
+        <div className="navbar-user">
+
+          <span className="username">
+            {username}
+          </span>
+
+          <div className="profile-container">
+
+            <button
+              type="button"
+              className="profile-btn"
+              onClick={() => setShowProfile(!showProfile)}
+            >
+              👤
+            </button>
+
+            {showProfile && (
+              <div className="profile-menu">
+
+                <p>{username}</p>
+
+                <button
+                  type="button"
+                  onClick={onLogout}
+                >
+                  Logout
+                </button>
+
+              </div>
+            )}
+
+          </div>
+
         </div>
-      </header>
+
+      </nav>
 
 
-      {/* Dashboard Content */}
+      {/* ================= MAIN CONTENT ================= */}
+
       <main className="dashboard-content">
 
-        <h2>Dashboard</h2>
+        <div className="dashboard-heading">
+          <h2>Dashboard</h2>
+
+          <p>
+            Manage and review submitted tickets
+          </p>
+        </div>
 
 
-        {/* Statistics */}
+        {/* ================= STATISTICS ================= */}
+
         <div className="stats-container">
 
-          <div className="stat-card">
-            <h3>Total Tickets</h3>
-            <p>25</p>
-          </div>
+          <button
+            type="button"
+            className={`stat-card ${
+              activeFilter === "All" ? "selected-card" : ""
+            }`}
+            onClick={() => setActiveFilter("All")}
+          >
+            <span className="stat-title">
+              Total Tickets
+            </span>
 
-          <div className="stat-card">
-            <h3>Pending Tickets</h3>
-            <p>10</p>
-          </div>
+            <span className="stat-number">
+              {totalTickets}
+            </span>
+          </button>
 
-          <div className="stat-card">
-            <h3>Accepted Tickets</h3>
-            <p>12</p>
-          </div>
 
-          <div className="stat-card">
-            <h3>Rejected Tickets</h3>
-            <p>3</p>
-          </div>
+          <button
+            type="button"
+            className={`stat-card ${
+              activeFilter === "Pending" ? "selected-card" : ""
+            }`}
+            onClick={() => setActiveFilter("Pending")}
+          >
+            <span className="stat-title">
+              Pending Tickets
+            </span>
+
+            <span className="stat-number">
+              {pendingTickets}
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            className={`stat-card ${
+              activeFilter === "Accepted" ? "selected-card" : ""
+            }`}
+            onClick={() => setActiveFilter("Accepted")}
+          >
+            <span className="stat-title">
+              Accepted Tickets
+            </span>
+
+            <span className="stat-number">
+              {acceptedTickets}
+            </span>
+          </button>
+
+
+          <button
+            type="button"
+            className={`stat-card ${
+              activeFilter === "Rejected" ? "selected-card" : ""
+            }`}
+            onClick={() => setActiveFilter("Rejected")}
+          >
+            <span className="stat-title">
+              Rejected Tickets
+            </span>
+
+            <span className="stat-number">
+              {rejectedTickets}
+            </span>
+          </button>
 
         </div>
 
 
-        {/* Ticket Section */}
+        {/* ================= TICKET LIST ================= */}
+
         <section className="ticket-section">
 
           <div className="ticket-section-header">
-            <h2>Tickets</h2>
+
+            <div>
+              <h2>Tickets</h2>
+
+              <p>
+                Showing {activeFilter.toLowerCase()} tickets
+              </p>
+            </div>
 
             <div className="ticket-filters">
-              <button className="active-filter">All</button>
-              <button>Pending</button>
-              <button>Accepted</button>
-              <button>Rejected</button>
+
+              {["All", "Pending", "Accepted", "Rejected"].map(
+                (filter) => (
+
+                  <button
+                    type="button"
+                    key={filter}
+                    className={
+                      activeFilter === filter
+                        ? "active-filter"
+                        : ""
+                    }
+                    onClick={() => setActiveFilter(filter)}
+                  >
+                    {filter}
+                  </button>
+
+                )
+              )}
+
             </div>
+
           </div>
 
 
-          {/* Ticket List */}
+          {/* ================= TABLE ================= */}
 
-          <div className="ticket-list">
+          <div className="ticket-table-container">
 
-            {/* Ticket 1 */}
-            <div className="ticket-card">
+            <table className="ticket-table">
 
-              <div className="ticket-details">
+              <thead>
+                <tr>
+                  <th>Ticket ID</th>
+                  <th>Issue</th>
+                  <th>Description</th>
+                  <th>Date & Time</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
 
-                <div className="ticket-id">
-                  #101
-                </div>
+              <tbody>
 
-                <div className="ticket-info">
-                  <h3>Login Issue</h3>
-                  <p>
-                    Unable to login to the system
-                  </p>
+                {visibleTickets.length === 0 ? (
 
-                  <div className="ticket-meta">
-                    <span>User: Rahul</span>
-                    <span>Priority: High</span>
-                  </div>
-                </div>
+                  <tr>
+                    <td
+                      colSpan="6"
+                      className="no-tickets"
+                    >
+                      No {activeFilter.toLowerCase()} tickets found.
+                    </td>
+                  </tr>
 
-              </div>
+                ) : (
 
-              <div className="ticket-actions">
+                  visibleTickets.map((ticket) => (
 
-                <span className="ticket-status pending">
-                  Pending
-                </span>
+                    <tr key={ticket.id}>
 
-                <button className="accept-btn">
-                  Accept
-                </button>
+                      <td className="ticket-id-cell">
+                        #{ticket.id}
+                      </td>
 
-                <button className="reject-btn">
-                  Reject
-                </button>
+                      <td>
+                        <strong>{ticket.title}</strong>
+                      </td>
 
-              </div>
+                      <td className="description-cell">
+                        {ticket.description}
+                      </td>
 
-            </div>
+                      <td>
+                        {ticket.dateTime}
+                      </td>
 
+                      <td>
 
-            {/* Ticket 2 */}
-            <div className="ticket-card">
+                        <span
+                          className={`ticket-status ${ticket.status.toLowerCase()}`}
+                        >
+                          {ticket.status}
+                        </span>
 
-              <div className="ticket-details">
+                      </td>
 
-                <div className="ticket-id">
-                  #102
-                </div>
+                      <td>
 
-                <div className="ticket-info">
-                  <h3>System Error</h3>
-                  <p>
-                    Error while opening the dashboard
-                  </p>
+                        {ticket.status === "Pending" ? (
 
-                  <div className="ticket-meta">
-                    <span>User: Priya</span>
-                    <span>Priority: Medium</span>
-                  </div>
-                </div>
+                          <div className="action-buttons">
 
-              </div>
+                            <button
+                              type="button"
+                              className="approve-btn"
+                              onClick={() =>
+                                handleApprove(ticket.id)
+                              }
+                            >
+                              Approve
+                            </button>
 
-              <div className="ticket-actions">
+                            <button
+                              type="button"
+                              className="reject-btn"
+                              onClick={() =>
+                                handleReject(ticket.id)
+                              }
+                            >
+                              Reject
+                            </button>
 
-                <span className="ticket-status pending">
-                  Pending
-                </span>
+                          </div>
 
-                <button className="accept-btn">
-                  Accept
-                </button>
+                        ) : (
 
-                <button className="reject-btn">
-                  Reject
-                </button>
+                          <span className="action-completed">
+                            Completed
+                          </span>
 
-              </div>
+                        )}
 
-            </div>
+                      </td>
 
+                    </tr>
 
-            {/* Ticket 3 */}
-            <div className="ticket-card">
+                  ))
 
-              <div className="ticket-details">
+                )}
 
-                <div className="ticket-id">
-                  #103
-                </div>
+              </tbody>
 
-                <div className="ticket-info">
-                  <h3>Password Reset</h3>
-                  <p>
-                    User requested a password reset
-                  </p>
-
-                  <div className="ticket-meta">
-                    <span>User: Amit</span>
-                    <span>Priority: Low</span>
-                  </div>
-                </div>
-
-              </div>
-
-              <div className="ticket-actions">
-
-                <span className="ticket-status accepted">
-                  Accepted
-                </span>
-
-              </div>
-
-            </div>
-
+            </table>
 
           </div>
 
         </section>
 
       </main>
+
+
+      {/* ================= FOOTER ================= */}
+
+      <footer className="dashboard-footer">
+
+        <p>
+          © 2026 Ticket Management System. All Rights Reserved.
+        </p>
+
+        <p>
+          Ticket Management Dashboard
+        </p>
+
+      </footer>
 
     </div>
   );
