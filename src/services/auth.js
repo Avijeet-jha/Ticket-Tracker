@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8000/api";
+const API_BASE_URL = "https://tender-cows-work.loca.lt/api";
 
 // Send signup request to FastAPI backend (which inserts into MySQL)
 export async function signupUser(userData) {
