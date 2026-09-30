@@ -8,7 +8,7 @@ class UserCreate(BaseModel):
     name: str
     email: EmailStr
     password: str
-    role: Optional[str] = "user"  # 'user' or 'manager'
+    role: Optional[str] = "Manager"  # 'user' or 'manager'
 
 
 # Schema for user login
