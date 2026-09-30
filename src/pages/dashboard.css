@@ -148,6 +148,8 @@ body,
 }
 
 .dashboard-heading h2 {
+  color: #000;
+  border-radius: 5px solid grey;
   margin: 0 0 5px;
   font-size: 28px;
 }
@@ -237,6 +239,7 @@ body,
 }
 
 .ticket-section-header h2 {
+  color: #000;
   margin: 0 0 5px;
   font-size: 21px;
 }
@@ -271,7 +274,7 @@ body,
 }
 
 .ticket-filters button:hover {
-  background-color: #f2f2f2;
+  background-color: #a8a1a1;
 }
 
 .ticket-filters .active-filter {
@@ -315,7 +318,7 @@ body,
 .ticket-table th {
   padding: 15px;
 
-  text-align: left;
+  text-align: center;
 
   font-size: 14px;
   font-weight: 600;

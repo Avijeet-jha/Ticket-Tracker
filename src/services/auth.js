@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 
 const API_BASE_URL = "http://localhost:8000/api";
 
+=======
+const API_BASE_URL = "http://10.207.45.233:8000/api";
+>>>>>>> b8528a24c8a7934d73669a68bb252c03e18a4869
 
 // Send signup request to FastAPI backend (which inserts into MySQL)
 export async function signupUser(userData) {
