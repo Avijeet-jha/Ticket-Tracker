@@ -362,6 +362,13 @@ body,
   color: #666;
 }
 
+/* Issue and Description aligned to the left */
+.ticket-table th:nth-child(2),
+.ticket-table td:nth-child(2),
+.ticket-table th:nth-child(3),
+.ticket-table td:nth-child(3) {
+  text-align: left;
+}
 
 /* =====================================================
    STATUS
