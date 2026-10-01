@@ -65,6 +65,15 @@ def update_status(ticket_id: int, payload: schemas.TicketStatusUpdate, db: Sessi
     if payload.rejection_reason is not None:
         ticket.rejection_reason = payload.rejection_reason
 
+    if payload.reviewed_by_id is not None:
+        ticket.reviewed_by_id = payload.reviewed_by_id
+    elif payload.status in ["Accepted", "Rejected"] and not ticket.reviewed_by_id:
+        # Default to active manager
+        manager = db.query(models.User).filter(models.User.role == "Manager").first()
+        if manager:
+            ticket.reviewed_by_id = manager.id
+
     db.commit()
     db.refresh(ticket)
     return format_ticket(ticket)
+
