@@ -1,7 +1,4 @@
-const API_BASE_URL =
-  typeof window !== "undefined"
-    ? `http://${window.location.hostname}:8000/api`
-    : "http://localhost:8000/api";
+const API_BASE_URL = "http://10.99.148.233:8000/api";
 
 // Fetch all tickets from the FastAPI backend (stored in MySQL)
 export async function fetchTickets(statusFilter = "All") {
