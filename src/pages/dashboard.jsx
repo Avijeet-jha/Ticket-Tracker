@@ -1,142 +1,59 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Dashboard.css";
+import { fetchTickets, updateTicketStatus } from "../services/tickets";
 
 function Dashboard({ onLogout, username = "Manager" }) {
   const [activeFilter, setActiveFilter] = useState("All");
   const [showProfile, setShowProfile] = useState(false);
+  const [tickets, setTickets] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const [tickets, setTickets] = useState([
-    {
-      id: 101,
-      title: "Login Issue",
-      description: "Unable to login to the system",
-      user: "Rahul",
-      dateTime: "30 Sep 2026, 09:30 AM",
-      priority: "High",
-      status: "Pending",
-    },
-    {
-      id: 102,
-      title: "System Error",
-      description: "Error while opening the dashboard",
-      user: "Priya",
-      dateTime: "30 Sep 2026, 10:15 AM",
-      priority: "Medium",
-      status: "Pending",
-    },
-    {
-      id: 103,
-      title: "Password Reset",
-      description: "User requested a password reset",
-      user: "Amit",
-      dateTime: "30 Sep 2026, 11:00 AM",
-      priority: "Low",
-      status: "Accepted",
-    },
-    {
-      id: 104,
-      title: "Account Access",
-      description: "Unable to access the employee account",
-      user: "Sneha",
-      dateTime: "30 Sep 2026, 11:30 AM",
-      priority: "High",
-      status: "Pending",
-    },
-    {
-      id: 105,
-      title: "Email Issue",
-      description: "Unable to receive system emails",
-      user: "Rohit",
-      dateTime: "30 Sep 2026, 12:00 PM",
-      priority: "Medium",
-      status: "Rejected",
-    },
-    {
-      id: 106,
-      title: "Dashboard Error",
-      description: "Dashboard showing incorrect information",
-      user: "Neha",
-      dateTime: "30 Sep 2026, 12:30 PM",
-      priority: "High",
-      status: "Pending",
-    },
-    {
-      id: 107,
-      title: "Profile Update",
-      description: "Unable to update profile information",
-      user: "Karan",
-      dateTime: "30 Sep 2026, 01:00 PM",
-      priority: "Low",
-      status: "Accepted",
-    },
-    {
-      id: 108,
-      title: "Report Issue",
-      description: "Unable to generate monthly report",
-      user: "Anjali",
-      dateTime: "30 Sep 2026, 01:30 PM",
-      priority: "Medium",
-      status: "Pending",
-    },
-    {
-      id: 109,
-      title: "Server Problem",
-      description: "Server response is taking too long",
-      user: "Vikas",
-      dateTime: "30 Sep 2026, 02:00 PM",
-      priority: "High",
-      status: "Rejected",
-    },
-    {
-      id: 110,
-      title: "Notification Issue",
-      description: "Notifications are not appearing",
-      user: "Pooja",
-      dateTime: "30 Sep 2026, 02:30 PM",
-      priority: "Low",
-      status: "Pending",
-    },
-    {
-      id: 111,
-      title: "Database Error",
-      description: "Unable to retrieve database records",
-      user: "Arjun",
-      dateTime: "30 Sep 2026, 03:00 PM",
-      priority: "High",
-      status: "Pending",
-    },
-    {
-      id: 112,
-      title: "Application Error",
-      description: "Application closes unexpectedly",
-      user: "Riya",
-      dateTime: "30 Sep 2026, 03:30 PM",
-      priority: "Medium",
-      status: "Accepted",
-    },
-  ]);
+  // Load all tickets from MySQL database on mount
+  useEffect(() => {
+    loadTickets();
+  }, []);
 
-  // Approve ticket
-  function handleApprove(id) {
-    setTickets((currentTickets) =>
-      currentTickets.map((ticket) =>
-        ticket.id === id
-          ? { ...ticket, status: "Accepted" }
-          : ticket
-      )
-    );
+  async function loadTickets() {
+    try {
+      setIsLoading(true);
+      setErrorMsg("");
+      const data = await fetchTickets();
+      setTickets(data);
+    } catch (err) {
+      console.error("Error loading tickets from database:", err);
+      setErrorMsg("Failed to connect to database. Make sure backend is running.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
-  // Reject ticket
-  function handleReject(id) {
-    setTickets((currentTickets) =>
-      currentTickets.map((ticket) =>
-        ticket.id === id
-          ? { ...ticket, status: "Rejected" }
-          : ticket
-      )
-    );
+  // Approve ticket directly in database
+  async function handleApprove(id) {
+    try {
+      const updated = await updateTicketStatus(id, "Accepted");
+      setTickets((currentTickets) =>
+        currentTickets.map((t) => (t.id === id ? { ...t, status: updated.status } : t))
+      );
+    } catch (err) {
+      console.error("Failed to approve ticket in database:", err);
+      alert("Failed to update ticket in database: " + err.message);
+    }
   }
+
+  // Reject ticket directly in database
+  async function handleReject(id) {
+    try {
+      const updated = await updateTicketStatus(id, "Rejected");
+      setTickets((currentTickets) =>
+        currentTickets.map((t) => (t.id === id ? { ...t, status: updated.status } : t))
+      );
+    } catch (err) {
+      console.error("Failed to reject ticket in database:", err);
+      alert("Failed to update ticket in database: " + err.message);
+    }
+  }
+
 
   // Ticket counts
   const totalTickets = tickets.length;
@@ -354,27 +271,28 @@ function Dashboard({ onLogout, username = "Manager" }) {
               </thead>
 
               <tbody>
-
-                {visibleTickets.length === 0 ? (
-
+                {isLoading ? (
+                  <tr>
+                    <td colSpan="6" className="no-tickets">
+                      Loading tickets from database...
+                    </td>
+                  </tr>
+                ) : visibleTickets.length === 0 ? (
                   <tr>
                     <td
                       colSpan="6"
                       className="no-tickets"
                     >
-                      No {activeFilter.toLowerCase()} tickets found.
+                      {errorMsg || `No ${activeFilter.toLowerCase()} tickets found.`}
                     </td>
                   </tr>
-
                 ) : (
-
                   visibleTickets.map((ticket) => (
-
                     <tr key={ticket.id}>
-
                       <td className="ticket-id-cell">
-                        #{ticket.id}
+                        {ticket.ticket_number || `#${ticket.id}`}
                       </td>
+
 
                       <td>
                         <strong>{ticket.title}</strong>
