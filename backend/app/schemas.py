@@ -43,6 +43,8 @@ class TicketCreate(BaseModel):
 class TicketStatusUpdate(BaseModel):
     status: str
     rejection_reason: Optional[str] = None
+    reviewed_by_id: Optional[int] = None
+
 
 
 class TicketResponse(BaseModel):
