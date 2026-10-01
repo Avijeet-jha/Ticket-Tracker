@@ -51,7 +51,7 @@ body,
   margin: 0;
   font-size: 25px;
   font-weight: 600;
-  color: #000;
+  color:#000;
 }
 
 .navbar-user {
@@ -242,15 +242,15 @@ body,
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  
 }
 
-.ticket-section-header h2 {
+.ticket-section-header h2{
   color: #000;
   font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
+    line-height: 118%;
+    letter-spacing: -0.24px;
+    margin: 0 0 8px;
 }
 
 
