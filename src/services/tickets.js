@@ -18,7 +18,20 @@ export async function fetchTickets(statusFilter = "All") {
 }
 
 // Update ticket status (e.g. 'Accepted', 'Rejected') directly in MySQL
-export async function updateTicketStatus(ticketId, status, rejectionReason = null) {
+export async function updateTicketStatus(ticketId, status, rejectionReason = null, reviewedById = null) {
+  let reviewerId = reviewedById;
+  if (!reviewerId && typeof window !== "undefined") {
+    try {
+      const stored = localStorage.getItem("ticketUser");
+      if (stored) {
+        const u = JSON.parse(stored);
+        reviewerId = u?.id;
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
   const response = await fetch(`${API_BASE_URL}/tickets/${ticketId}/status`, {
     method: "PATCH",
     headers: {
@@ -27,8 +40,11 @@ export async function updateTicketStatus(ticketId, status, rejectionReason = nul
     body: JSON.stringify({
       status,
       rejection_reason: rejectionReason,
+      reviewed_by_id: reviewerId,
     }),
   });
+
+
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}));

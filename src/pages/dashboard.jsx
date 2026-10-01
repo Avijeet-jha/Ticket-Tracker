@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "./Dashboard.css";
 import { fetchTickets, updateTicketStatus } from "../services/tickets";
+import { getUser } from "../services/auth";
 
 function Dashboard({ onLogout, username = "Manager" }) {
   const [activeFilter, setActiveFilter] = useState("All");
@@ -8,6 +9,9 @@ function Dashboard({ onLogout, username = "Manager" }) {
   const [tickets, setTickets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
+
+  const currentUser = getUser();
+  const displayName = currentUser?.name || username;
 
   // Load all tickets from MySQL database on mount
   useEffect(() => {
@@ -31,9 +35,9 @@ function Dashboard({ onLogout, username = "Manager" }) {
   // Approve ticket directly in database
   async function handleApprove(id) {
     try {
-      const updated = await updateTicketStatus(id, "Accepted");
+      const updated = await updateTicketStatus(id, "Accepted", null, currentUser?.id);
       setTickets((currentTickets) =>
-        currentTickets.map((t) => (t.id === id ? { ...t, status: updated.status } : t))
+        currentTickets.map((t) => (t.id === id ? { ...t, status: updated.status, reviewed_by_name: updated.reviewed_by_name || displayName } : t))
       );
     } catch (err) {
       console.error("Failed to approve ticket in database:", err);
@@ -44,15 +48,16 @@ function Dashboard({ onLogout, username = "Manager" }) {
   // Reject ticket directly in database
   async function handleReject(id) {
     try {
-      const updated = await updateTicketStatus(id, "Rejected");
+      const updated = await updateTicketStatus(id, "Rejected", null, currentUser?.id);
       setTickets((currentTickets) =>
-        currentTickets.map((t) => (t.id === id ? { ...t, status: updated.status } : t))
+        currentTickets.map((t) => (t.id === id ? { ...t, status: updated.status, reviewed_by_name: updated.reviewed_by_name || displayName } : t))
       );
     } catch (err) {
       console.error("Failed to reject ticket in database:", err);
       alert("Failed to update ticket in database: " + err.message);
     }
   }
+
 
 
   // Ticket counts
@@ -70,12 +75,26 @@ function Dashboard({ onLogout, username = "Manager" }) {
     (ticket) => ticket.status === "Rejected"
   ).length;
 
-  // Filter tickets
-  const visibleTickets = tickets.filter(
+  const myApprovedTickets = tickets.filter(
     (ticket) =>
-      activeFilter === "All" ||
-      ticket.status === activeFilter
-  );
+      ticket.status === "Accepted" &&
+      (ticket.reviewed_by_id === currentUser?.id ||
+       ticket.reviewed_by_name?.toLowerCase() === displayName?.toLowerCase())
+  ).length;
+
+  // Filter tickets
+  const visibleTickets = tickets.filter((ticket) => {
+    if (activeFilter === "All") return true;
+    if (activeFilter === "My Approved") {
+      return (
+        ticket.status === "Accepted" &&
+        (ticket.reviewed_by_id === currentUser?.id ||
+         ticket.reviewed_by_name?.toLowerCase() === displayName?.toLowerCase())
+      );
+    }
+    return ticket.status === activeFilter;
+  });
+
 
   return (
     <div className="dashboard-page">
@@ -91,7 +110,7 @@ function Dashboard({ onLogout, username = "Manager" }) {
         <div className="navbar-user">
 
           <span className="username">
-            {username}
+            {displayName}
           </span>
 
           <div className="profile-container">
@@ -107,7 +126,7 @@ function Dashboard({ onLogout, username = "Manager" }) {
             {showProfile && (
               <div className="profile-menu">
 
-                <p>{username}</p>
+                <p>{displayName}</p>
 
                 <button
                   type="button"
@@ -115,9 +134,9 @@ function Dashboard({ onLogout, username = "Manager" }) {
                 >
                   Logout
                 </button>
-
               </div>
             )}
+
 
           </div>
 
@@ -210,6 +229,22 @@ function Dashboard({ onLogout, username = "Manager" }) {
             </span>
           </button>
 
+          <button
+            type="button"
+            className={`stat-card ${
+              activeFilter === "My Approved" ? "selected-card" : ""
+            }`}
+            onClick={() => setActiveFilter("My Approved")}
+          >
+            <span className="stat-title">
+              Approved by Me
+            </span>
+
+            <span className="stat-number">
+              {myApprovedTickets}
+            </span>
+          </button>
+
         </div>
 
 
@@ -229,7 +264,7 @@ function Dashboard({ onLogout, username = "Manager" }) {
 
             <div className="ticket-filters">
 
-              {["All", "Pending", "Accepted", "Rejected"].map(
+              {["All", "Pending", "Accepted", "Rejected", "My Approved"].map(
                 (filter) => (
 
                   <button
@@ -266,6 +301,7 @@ function Dashboard({ onLogout, username = "Manager" }) {
                   <th>Description</th>
                   <th>Date & Time</th>
                   <th>Status</th>
+                  <th>Reviewed By</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -273,14 +309,14 @@ function Dashboard({ onLogout, username = "Manager" }) {
               <tbody>
                 {isLoading ? (
                   <tr>
-                    <td colSpan="6" className="no-tickets">
+                    <td colSpan="7" className="no-tickets">
                       Loading tickets from database...
                     </td>
                   </tr>
                 ) : visibleTickets.length === 0 ? (
                   <tr>
                     <td
-                      colSpan="6"
+                      colSpan="7"
                       className="no-tickets"
                     >
                       {errorMsg || `No ${activeFilter.toLowerCase()} tickets found.`}
@@ -292,7 +328,6 @@ function Dashboard({ onLogout, username = "Manager" }) {
                       <td className="ticket-id-cell">
                         {ticket.ticket_number || `#${ticket.id}`}
                       </td>
-
 
                       <td>
                         <strong>{ticket.title}</strong>
@@ -307,21 +342,49 @@ function Dashboard({ onLogout, username = "Manager" }) {
                       </td>
 
                       <td>
-
                         <span
                           className={`ticket-status ${ticket.status.toLowerCase()}`}
                         >
                           {ticket.status}
                         </span>
-
                       </td>
 
                       <td>
+                        {ticket.reviewed_by_name ? (
+                          <span
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: "4px",
+                              padding: "4px 10px",
+                              borderRadius: "16px",
+                              fontSize: "12px",
+                              fontWeight: "600",
+                              backgroundColor:
+                                ticket.reviewed_by_name.toLowerCase() === displayName.toLowerCase()
+                                  ? "#e0f2fe"
+                                  : "#f1f5f9",
+                              color:
+                                ticket.reviewed_by_name.toLowerCase() === displayName.toLowerCase()
+                                  ? "#0284c7"
+                                  : "#475569",
+                              border:
+                                ticket.reviewed_by_name.toLowerCase() === displayName.toLowerCase()
+                                  ? "1px solid #bae6fd"
+                                  : "1px solid #e2e8f0",
+                            }}
+                          >
+                            👤 {ticket.reviewed_by_name}
+                            {ticket.reviewed_by_name.toLowerCase() === displayName.toLowerCase() && " (You)"}
+                          </span>
+                        ) : (
+                          <span style={{ color: "#94a3b8" }}>—</span>
+                        )}
+                      </td>
 
+                      <td>
                         {ticket.status === "Pending" ? (
-
                           <div className="action-buttons">
-
                             <button
                               type="button"
                               className="approve-btn"
@@ -341,22 +404,18 @@ function Dashboard({ onLogout, username = "Manager" }) {
                             >
                               Reject
                             </button>
-
                           </div>
-
                         ) : (
-
-                          <span className="action-completed">
-                            Completed
-                          </span>
-
+                          <div className="action-completed-box">
+                            <span className="action-completed">
+                              {ticket.status}
+                            </span>
+                          </div>
                         )}
-
                       </td>
-
                     </tr>
-
                   ))
+
 
                 )}
 
