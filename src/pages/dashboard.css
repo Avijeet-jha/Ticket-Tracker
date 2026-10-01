@@ -40,14 +40,18 @@ body,
   justify-content: space-between;
   align-items: center;
 
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  z-index: 1000;
 }
 
 .navbar-title h1 {
   margin: 0;
   font-size: 25px;
   font-weight: 600;
-  color:#000;
+  color: #000;
 }
 
 .navbar-user {
@@ -138,7 +142,7 @@ body,
 
   margin: 0 auto;
 
-  padding: 35px 45px;
+  padding: 105px 45px 30px;
 
   flex: 1;
 }
@@ -205,11 +209,13 @@ body,
 }
 
 .stat-title {
+  text-align: center;
   color: #666;
   font-size: 15px;
 }
 
 .stat-number {
+  text-align: center;
   font-size: 32px;
   font-weight: 600;
 }
@@ -220,33 +226,37 @@ body,
 ===================================================== */
 
 .ticket-section {
-  background-color: white;
-
-  border: 1px solid #ddd;
-  border-radius: 12px;
-
-  overflow: hidden;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .ticket-section-header {
+  flex-shrink: 0;
+
   padding: 22px 25px;
 
   border-bottom: 1px solid #ddd;
-
+  color: #000;
   display: flex;
   justify-content: space-between;
   align-items: center;
+
 }
 
 .ticket-section-header h2 {
   color: #000;
-  margin: 0 0 5px;
-  font-size: 21px;
+  font-size: 24px;
+  line-height: 118%;
+  letter-spacing: -0.24px;
+  margin: 0 0 8px;
 }
+
 
 .ticket-section-header p {
   margin: 0;
-  color: #777;
+  color: #5f5a5a;
   font-size: 14px;
 }
 
@@ -289,10 +299,9 @@ body,
 ===================================================== */
 
 .ticket-table-container {
-  max-height: 560px;
-
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
-  overflow-x: auto;
 }
 
 
@@ -309,10 +318,9 @@ body,
 .ticket-table thead {
   position: sticky;
   top: 0;
-
   z-index: 2;
-
   background-color: #f8f8f8;
+  color: #0000;
 }
 
 .ticket-table th {
