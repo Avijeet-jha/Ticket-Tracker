@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import "./Dashboard.css";
 import { fetchTickets, updateTicketStatus } from "../services/tickets";
 
+
 function Dashboard({ onLogout, username = "Manager" }) {
   const [activeFilter, setActiveFilter] = useState("All");
   const [showProfile, setShowProfile] = useState(false);
