@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import "./Dashboard.css";
 import { fetchTickets, updateTicketStatus } from "../services/tickets";
+import { getUser, logoutUser } from "../services/auth";
 
-
-function Dashboard({ onLogout, username = "Manager" }) {
+function Dashboard({ onLogout }) {
+  const user = getUser();
+  const username = user ? user.name : "User";
   const [activeFilter, setActiveFilter] = useState("All");
   const [showProfile, setShowProfile] = useState(false);
   const [tickets, setTickets] = useState([]);
@@ -23,7 +25,9 @@ function Dashboard({ onLogout, username = "Manager" }) {
       setTickets(data);
     } catch (err) {
       console.error("Error loading tickets from database:", err);
-      setErrorMsg("Failed to connect to database. Make sure backend is running.");
+      setErrorMsg(
+        "Failed to connect to database. Make sure backend is running.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -34,7 +38,9 @@ function Dashboard({ onLogout, username = "Manager" }) {
     try {
       const updated = await updateTicketStatus(id, "Accepted");
       setTickets((currentTickets) =>
-        currentTickets.map((t) => (t.id === id ? { ...t, status: updated.status } : t))
+        currentTickets.map((t) =>
+          t.id === id ? { ...t, status: updated.status } : t,
+        ),
       );
     } catch (err) {
       console.error("Failed to approve ticket in database:", err);
@@ -47,7 +53,9 @@ function Dashboard({ onLogout, username = "Manager" }) {
     try {
       const updated = await updateTicketStatus(id, "Rejected");
       setTickets((currentTickets) =>
-        currentTickets.map((t) => (t.id === id ? { ...t, status: updated.status } : t))
+        currentTickets.map((t) =>
+          t.id === id ? { ...t, status: updated.status } : t,
+        ),
       );
     } catch (err) {
       console.error("Failed to reject ticket in database:", err);
@@ -55,48 +63,39 @@ function Dashboard({ onLogout, username = "Manager" }) {
     }
   }
 
-
   // Ticket counts
   const totalTickets = tickets.length;
 
   const pendingTickets = tickets.filter(
-    (ticket) => ticket.status === "Pending"
+    (ticket) => ticket.status === "Pending",
   ).length;
 
   const acceptedTickets = tickets.filter(
-    (ticket) => ticket.status === "Accepted"
+    (ticket) => ticket.status === "Accepted",
   ).length;
 
   const rejectedTickets = tickets.filter(
-    (ticket) => ticket.status === "Rejected"
+    (ticket) => ticket.status === "Rejected",
   ).length;
 
   // Filter tickets
   const visibleTickets = tickets.filter(
-    (ticket) =>
-      activeFilter === "All" ||
-      ticket.status === activeFilter
+    (ticket) => activeFilter === "All" || ticket.status === activeFilter,
   );
 
   return (
     <div className="dashboard-page">
-
       {/* ================= NAVBAR ================= */}
 
       <nav className="dashboard-navbar">
-
         <div className="navbar-title">
           <h1>Ticket Management</h1>
         </div>
 
         <div className="navbar-user">
-
-          <span className="username">
-            {username}
-          </span>
+          <span className="username">{username}</span>
 
           <div className="profile-container">
-
             <button
               type="button"
               className="profile-btn"
@@ -107,43 +106,34 @@ function Dashboard({ onLogout, username = "Manager" }) {
 
             {showProfile && (
               <div className="profile-menu">
-
                 <p>{username}</p>
 
                 <button
-                  type="button"
-                  onClick={onLogout}
+                  onClick={() => {
+                    logoutUser();
+                    onLogout();
+                  }}
                 >
                   Logout
                 </button>
-
               </div>
             )}
-
           </div>
-
         </div>
-
       </nav>
-
 
       {/* ================= MAIN CONTENT ================= */}
 
       <main className="dashboard-content">
-
         <div className="dashboard-heading">
           <h2>Dashboard</h2>
 
-          <p>
-            Manage and review submitted tickets
-          </p>
+          <p>Manage and review submitted tickets</p>
         </div>
-
 
         {/* ================= STATISTICS ================= */}
 
         <div className="stats-container">
-
           <button
             type="button"
             className={`stat-card ${
@@ -151,15 +141,10 @@ function Dashboard({ onLogout, username = "Manager" }) {
             }`}
             onClick={() => setActiveFilter("All")}
           >
-            <span className="stat-title">
-              Total Tickets
-            </span>
+            <span className="stat-title">Total Tickets</span>
 
-            <span className="stat-number">
-              {totalTickets}
-            </span>
+            <span className="stat-number">{totalTickets}</span>
           </button>
-
 
           <button
             type="button"
@@ -168,15 +153,10 @@ function Dashboard({ onLogout, username = "Manager" }) {
             }`}
             onClick={() => setActiveFilter("Pending")}
           >
-            <span className="stat-title">
-              Pending Tickets
-            </span>
+            <span className="stat-title">Pending Tickets</span>
 
-            <span className="stat-number">
-              {pendingTickets}
-            </span>
+            <span className="stat-number">{pendingTickets}</span>
           </button>
-
 
           <button
             type="button"
@@ -185,15 +165,10 @@ function Dashboard({ onLogout, username = "Manager" }) {
             }`}
             onClick={() => setActiveFilter("Accepted")}
           >
-            <span className="stat-title">
-              Accepted Tickets
-            </span>
+            <span className="stat-title">Accepted Tickets</span>
 
-            <span className="stat-number">
-              {acceptedTickets}
-            </span>
+            <span className="stat-number">{acceptedTickets}</span>
           </button>
-
 
           <button
             type="button"
@@ -202,64 +177,40 @@ function Dashboard({ onLogout, username = "Manager" }) {
             }`}
             onClick={() => setActiveFilter("Rejected")}
           >
-            <span className="stat-title">
-              Rejected Tickets
-            </span>
+            <span className="stat-title">Rejected Tickets</span>
 
-            <span className="stat-number">
-              {rejectedTickets}
-            </span>
+            <span className="stat-number">{rejectedTickets}</span>
           </button>
-
         </div>
-
 
         {/* ================= TICKET LIST ================= */}
 
         <section className="ticket-section">
-
           <div className="ticket-section-header">
-
             <div>
               <h2>Tickets</h2>
 
-              <p>
-                Showing {activeFilter.toLowerCase()} tickets
-              </p>
+              <p>Showing {activeFilter.toLowerCase()} tickets</p>
             </div>
 
             <div className="ticket-filters">
-
-              {["All", "Pending", "Accepted", "Rejected"].map(
-                (filter) => (
-
-                  <button
-                    type="button"
-                    key={filter}
-                    className={
-                      activeFilter === filter
-                        ? "active-filter"
-                        : ""
-                    }
-                    onClick={() => setActiveFilter(filter)}
-                  >
-                    {filter}
-                  </button>
-
-                )
-              )}
-
+              {["All", "Pending", "Accepted", "Rejected"].map((filter) => (
+                <button
+                  type="button"
+                  key={filter}
+                  className={activeFilter === filter ? "active-filter" : ""}
+                  onClick={() => setActiveFilter(filter)}
+                >
+                  {filter}
+                </button>
+              ))}
             </div>
-
           </div>
-
 
           {/* ================= TABLE ================= */}
 
           <div className="ticket-table-container">
-
             <table className="ticket-table">
-
               <thead>
                 <tr>
                   <th>Ticket ID</th>
@@ -280,11 +231,9 @@ function Dashboard({ onLogout, username = "Manager" }) {
                   </tr>
                 ) : visibleTickets.length === 0 ? (
                   <tr>
-                    <td
-                      colSpan="6"
-                      className="no-tickets"
-                    >
-                      {errorMsg || `No ${activeFilter.toLowerCase()} tickets found.`}
+                    <td colSpan="6" className="no-tickets">
+                      {errorMsg ||
+                        `No ${activeFilter.toLowerCase()} tickets found.`}
                     </td>
                   </tr>
                 ) : (
@@ -294,41 +243,29 @@ function Dashboard({ onLogout, username = "Manager" }) {
                         {ticket.ticket_number || `#${ticket.id}`}
                       </td>
 
-
                       <td>
                         <strong>{ticket.title}</strong>
                       </td>
 
-                      <td className="description-cell">
-                        {ticket.description}
-                      </td>
+                      <td className="description-cell">{ticket.description}</td>
+
+                      <td>{ticket.dateTime}</td>
 
                       <td>
-                        {ticket.dateTime}
-                      </td>
-
-                      <td>
-
                         <span
                           className={`ticket-status ${ticket.status.toLowerCase()}`}
                         >
                           {ticket.status}
                         </span>
-
                       </td>
 
                       <td>
-
                         {ticket.status === "Pending" ? (
-
                           <div className="action-buttons">
-
                             <button
                               type="button"
                               className="approve-btn"
-                              onClick={() =>
-                                handleApprove(ticket.id)
-                              }
+                              onClick={() => handleApprove(ticket.id)}
                             >
                               Approve
                             </button>
@@ -336,56 +273,31 @@ function Dashboard({ onLogout, username = "Manager" }) {
                             <button
                               type="button"
                               className="reject-btn"
-                              onClick={() =>
-                                handleReject(ticket.id)
-                              }
+                              onClick={() => handleReject(ticket.id)}
                             >
                               Reject
                             </button>
-
                           </div>
-
                         ) : (
-
-                          <span className="action-completed">
-                            Completed
-                          </span>
-
+                          <span className="action-completed">Completed</span>
                         )}
-
                       </td>
-
                     </tr>
-
                   ))
-
                 )}
-
               </tbody>
-
             </table>
-
           </div>
-
         </section>
-
       </main>
-
 
       {/* ================= FOOTER ================= */}
 
       <footer className="dashboard-footer">
+        <p>© 2026 Ticket Management System. All Rights Reserved.</p>
 
-        <p>
-          © 2026 Ticket Management System. All Rights Reserved.
-        </p>
-
-        <p>
-          Ticket Management Dashboard
-        </p>
-
+        <p>Ticket Management Dashboard</p>
       </footer>
-
     </div>
   );
 }
