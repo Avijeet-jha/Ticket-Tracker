@@ -1,5 +1,8 @@
 const API_BASE_URL = "http://10.99.148.233:8000/api";
+<<<<<<< HEAD
 
+=======
+>>>>>>> f803ad602e90b782884ebd06899a5c27fc89cd2a
 // Fetch all tickets from the FastAPI backend (stored in MySQL)
 export async function fetchTickets(statusFilter = "All") {
   const queryParam =

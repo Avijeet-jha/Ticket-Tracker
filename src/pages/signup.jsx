@@ -13,7 +13,7 @@ function Signup({ onLogin }) {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match");
+      alert("Passwords do not match!");
       return;
     }
 
