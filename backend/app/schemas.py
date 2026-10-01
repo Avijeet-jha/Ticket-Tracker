@@ -3,21 +3,19 @@ from typing import Optional
 from pydantic import BaseModel, EmailStr
 
 
-# Schema for user signup
+# Auth schemas
 class UserCreate(BaseModel):
     name: str
     email: EmailStr
     password: str
-    role: Optional[str] = "Manager"  # 'user' or 'manager'
+    role: Optional[str] = "user"
 
 
-# Schema for user login
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
 
-# Schema for returning user data (never return password)
 class UserResponse(BaseModel):
     id: int
     name: str
@@ -29,8 +27,38 @@ class UserResponse(BaseModel):
         from_attributes = True
 
 
-# Schema for JWT login response
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
     user: UserResponse
+
+
+# Ticket schemas
+class TicketCreate(BaseModel):
+    title: str
+    description: str
+    priority: Optional[str] = "Medium"
+
+
+class TicketStatusUpdate(BaseModel):
+    status: str
+    rejection_reason: Optional[str] = None
+
+
+class TicketResponse(BaseModel):
+    id: int
+    ticket_number: str
+    title: str
+    description: str
+    priority: str
+    status: str
+    user: Optional[str] = None
+    created_by_id: int
+    reviewed_by_id: Optional[int] = None
+    rejection_reason: Optional[str] = None
+    created_at: Optional[datetime] = None
+    updated_at: Optional[datetime] = None
+    dateTime: Optional[str] = None
+
+    class Config:
+        from_attributes = True
