@@ -57,10 +57,12 @@ class TicketResponse(BaseModel):
     user: Optional[str] = None
     created_by_id: int
     reviewed_by_id: Optional[int] = None
+    reviewed_by_name: Optional[str] = None
     rejection_reason: Optional[str] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     dateTime: Optional[str] = None
+
 
     class Config:
         from_attributes = True

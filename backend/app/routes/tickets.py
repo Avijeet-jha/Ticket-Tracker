@@ -21,11 +21,13 @@ def format_ticket(ticket: models.Ticket) -> dict:
         "user": ticket.creator.name if ticket.creator else "Unknown",
         "created_by_id": ticket.created_by_id,
         "reviewed_by_id": ticket.reviewed_by_id,
+        "reviewed_by_name": ticket.reviewer.name if ticket.reviewer else None,
         "rejection_reason": ticket.rejection_reason,
         "created_at": ticket.created_at,
         "updated_at": ticket.updated_at,
         "dateTime": created_str,
     }
+
 
 
 # Get all tickets with optional filter
@@ -65,15 +67,18 @@ def update_status(ticket_id: int, payload: schemas.TicketStatusUpdate, db: Sessi
     if payload.rejection_reason is not None:
         ticket.rejection_reason = payload.rejection_reason
 
-    if payload.reviewed_by_id is not None:
+    if payload.status == "Pending":
+        ticket.reviewed_by_id = None
+        ticket.rejection_reason = None
+    elif payload.reviewed_by_id is not None:
         ticket.reviewed_by_id = payload.reviewed_by_id
-    elif payload.status in ["Accepted", "Rejected"] and not ticket.reviewed_by_id:
-        # Default to active manager
-        manager = db.query(models.User).filter(models.User.role == "Manager").first()
-        if manager:
-            ticket.reviewed_by_id = manager.id
 
     db.commit()
     db.refresh(ticket)
+    # Reload relation to guarantee latest reviewer name is populated
+    if ticket.reviewed_by_id:
+        ticket.reviewer = db.query(models.User).filter(models.User.id == ticket.reviewed_by_id).first()
+
     return format_ticket(ticket)
+
 

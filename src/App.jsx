@@ -4,7 +4,9 @@ import Signup from "./pages/signup.jsx";
 import Dashboard from "./pages/dashboard.jsx";
 
 function App() {
-  const [page, setPage] = useState("login");
+  const [page, setPage] = useState(() => {
+    return localStorage.getItem("ticketUser") ? "dashboard" : "login";
+  });
 
   return (
     <>
@@ -23,11 +25,16 @@ function App() {
 
       {page === "dashboard" && (
         <Dashboard
-          onLogout={() => setPage("login")}
+          onLogout={() => {
+            localStorage.removeItem("ticketUser");
+            localStorage.removeItem("ticketToken");
+            setPage("login");
+          }}
         />
       )}
     </>
   );
 }
+
 
 export default App;

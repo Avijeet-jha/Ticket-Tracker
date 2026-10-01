@@ -136,9 +136,8 @@ function Dashboard({ onLogout }) {
         <div className="stats-container">
           <button
             type="button"
-            className={`stat-card ${
-              activeFilter === "All" ? "selected-card" : ""
-            }`}
+            className={`stat-card ${activeFilter === "All" ? "selected-card" : ""
+              }`}
             onClick={() => setActiveFilter("All")}
           >
             <span className="stat-title">Total Tickets</span>
@@ -148,9 +147,8 @@ function Dashboard({ onLogout }) {
 
           <button
             type="button"
-            className={`stat-card ${
-              activeFilter === "Pending" ? "selected-card" : ""
-            }`}
+            className={`stat-card ${activeFilter === "Pending" ? "selected-card" : ""
+              }`}
             onClick={() => setActiveFilter("Pending")}
           >
             <span className="stat-title">Pending Tickets</span>
@@ -160,9 +158,8 @@ function Dashboard({ onLogout }) {
 
           <button
             type="button"
-            className={`stat-card ${
-              activeFilter === "Accepted" ? "selected-card" : ""
-            }`}
+            className={`stat-card ${activeFilter === "Accepted" ? "selected-card" : ""
+              }`}
             onClick={() => setActiveFilter("Accepted")}
           >
             <span className="stat-title">Accepted Tickets</span>
@@ -172,9 +169,8 @@ function Dashboard({ onLogout }) {
 
           <button
             type="button"
-            className={`stat-card ${
-              activeFilter === "Rejected" ? "selected-card" : ""
-            }`}
+            className={`stat-card ${activeFilter === "Rejected" ? "selected-card" : ""
+              }`}
             onClick={() => setActiveFilter("Rejected")}
           >
             <span className="stat-title">Rejected Tickets</span>
