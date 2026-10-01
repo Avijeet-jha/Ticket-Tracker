@@ -16,11 +16,9 @@ function Login({ onSignup, onLoginSuccess }) {
         email: email,
         password: password,
       });
+      onLoginSuccess();
 
-      alert("Login successful!");
-      if (onLoginSuccess) {
-        onLoginSuccess();
-      }
+        
     } catch (err) {
       alert(err.message);
     } finally {
