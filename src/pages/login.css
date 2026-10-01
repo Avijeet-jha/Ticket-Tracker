@@ -1,5 +1,11 @@
 * {
-  background-color: rgb(255, 255, 255);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: #ffffff;
   color: #000000;
 }
 
@@ -9,21 +15,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-
-.form-group {
-  margin: 5px;
-  padding: 5px;
-}
-
-.password-input {
-  margin: 3px;
-  padding: 5px;
-  border-radius: 5px;
-  color: black;
   background-color: #ffffff;
-  border: 2px solid #000000;
 }
 
 .login-card {
@@ -31,25 +23,16 @@
   padding: 50px;
   border: 1px solid #333;
   border-radius: 15px;
-  background: white;
+  background-color: #ffffff;
   text-align: center;
-}
-
-.login-card h1 {
-  color: #000;
-  text-align: center;
-  font-size: 40px;
-  margin: 0 0 15px 0;
 }
 
 .login-card h1 {
   color: #000;
   font-size: 38px;
   font-weight: 600;
-
   white-space: nowrap;
   width: max-content;
-
   margin: 0 auto 15px auto;
 }
 
@@ -59,25 +42,35 @@
   color: #555;
 }
 
+/* ================= FORM ================= */
+
 .login-form-group {
   display: flex;
   align-items: center;
+  width: 100%;
   margin-bottom: 20px;
 }
 
 .login-form-group label {
   width: 150px;
+  flex-shrink: 0;
   margin-right: 15px;
+  text-align: left;
   font-size: 17px;
+  color: #000;
 }
+
+/* ================= INPUT ================= */
 
 .login-form-group input {
   flex: 1;
+  width: 100%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 15px;
-  box-sizing: border-box;
+  color: #000;
+  background-color: #fff;
 }
 
 .login-form-group input:focus {
@@ -85,14 +78,49 @@
   border-color: #333;
 }
 
+/* ================= PASSWORD ================= */
+
+.password-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.password-wrapper .password-input {
+  width: 100%;
+  padding: 12px 45px 12px 12px;
+}
+
+.password-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  border: none;
+  background: transparent;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  color: #333;
+}
+
+.password-eye:hover {
+  color: #000;
+}
+/* ================= LOGIN BUTTON ================= */
+
 .login-btn {
   display: block;
   margin: 15px auto 0;
   padding: 12px 30px;
   border: none;
   border-radius: 7px;
-  background: black;
-  color: white;
+  background: #000;
+  color: #fff;
   font-size: 16px;
   cursor: pointer;
 }
@@ -101,6 +129,7 @@
   background: #333;
 }
 
+/* ================= SIGNUP LINK ================= */
 
 .signup-link {
   text-align: center;
